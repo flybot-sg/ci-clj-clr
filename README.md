@@ -1,5 +1,13 @@
 # ci-clj-clr
 
+<div align="center">
+    <a href="https://github.com/flybot-sg/ci-clj-clr/actions/workflows/build-and-push.yml"><img src="https://github.com/flybot-sg/ci-clj-clr/actions/workflows/build-and-push.yml/badge.svg" alt="Build"></a>
+    <a href="https://github.com/flybot-sg/ci-clj-clr/pkgs/container/ci-clj-clr"><img src="https://img.shields.io/badge/ghcr.io-ci--clj--clr-blue" alt="GHCR"></a>
+    <img src="https://img.shields.io/badge/platform-amd64%20%7C%20arm64-lightgrey" alt="Platforms">
+</div>
+
+<br>
+
 CI build image with JVM Clojure, Babashka, Mono, and [Nostrand](https://github.com/nasser/nostrand) for running tests on both JVM and CLR.
 
 ```bash
@@ -34,10 +42,6 @@ image: ghcr.io/flybot-sg/ci-clj-clr:<version>
 
 The image supports an optional `SSH_PRIVATE_KEY` environment variable. When set, the entrypoint loads it into `ssh-agent` so CI jobs can clone private git dependencies.
 
-## Platforms
-
-Multi-arch: `linux/amd64` and `linux/arm64`.
-
 ## Releasing
 
 ```bash
@@ -46,7 +50,3 @@ Multi-arch: `linux/amd64` and `linux/arm64`.
 # 3. Tag and push — GitHub Actions builds and pushes to GHCR
 bb tag
 ```
-
-## License
-
-Copyright 2024 Flybot Pte. Ltd. (风林火山)
