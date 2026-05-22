@@ -5,9 +5,9 @@ LABEL org.opencontainers.image.description="CI build image with JVM Clojure, Bab
 LABEL org.opencontainers.image.licenses="MIT"
 
 # --- System packages + Temurin JDK 21 ---
-# mono-devel is required because Nostrand targets net471 (.NET Framework)
-# and needs Mono to execute on Linux. This dependency goes away once
-# Nostrand is migrated to run on modern .NET (see nasser/nostrand).
+# mono-devel hosts Nostrand (net471 .NET Framework target). mono-devel
+# (not mono-runtime) is required because Nostrand's net471 assemblies
+# reference netstandard 2.0 facade assemblies, which only mono-devel ships.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       ca-certificates curl git gpg openssh-client rlwrap unzip \
@@ -53,28 +53,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_24.x -o /tmp/nodesource-setup.sh
     node --version && npm --version
 
 # --- Nostrand (MAGIC task runner / dependency manager) ---
-# Built with dotnet SDK, runs on Mono (net471 target).
-# The SDK is removed after building to keep the image small.
-# Pin to a specific commit for reproducible builds.
-ARG NOSTRAND_REF=e6ab32d38691b1e667037a9766b1b5b6fe0fccc2
-RUN curl -fsSL https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb \
-      -o /tmp/packages-microsoft-prod.deb && \
-    dpkg -i /tmp/packages-microsoft-prod.deb && \
-    rm -f /tmp/packages-microsoft-prod.deb && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends dotnet-sdk-10.0 && \
-    git clone https://github.com/nasser/nostrand.git /nostrand && \
-    cd /nostrand && \
-    git checkout "${NOSTRAND_REF}" && \
-    dotnet build -c Release -f net471 && \
-    NOS_PATH=$(find /nostrand/bin -name "nos" -type f | head -1) && \
-    if [ -z "$NOS_PATH" ]; then echo "ERROR: nos not found after build" && exit 1; fi && \
-    ln -s "$NOS_PATH" /usr/local/bin/nos && \
-    rm -rf /nostrand/.git /nostrand/obj && \
-    apt-get remove -y dotnet-sdk-10.0 && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /root/.dotnet /root/.nuget /root/.local/share/NuGet
+# Installed from the flybot-sg/magic release tarball.
+ARG MAGIC_VERSION=v0.1.0
+RUN curl -fsSL "https://raw.githubusercontent.com/flybot-sg/magic/main/install/nos.sh" \
+      | MAGIC_VERSION="${MAGIC_VERSION}" \
+        INSTALL_DIR=/opt/nostrand \
+        INSTALL_LINK=/usr/local/bin/nos \
+        bash
 
 # --- SSH config for CI jobs that clone private deps via SSH_PRIVATE_KEY ---
 COPY .ssh/config /root/.ssh/config

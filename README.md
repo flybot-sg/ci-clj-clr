@@ -8,7 +8,7 @@
 
 <br>
 
-CI build image with JVM Clojure, Babashka, Mono, and [Nostrand](https://github.com/nasser/nostrand) for running tests on both JVM and CLR.
+CI build image with JVM Clojure, Babashka, Mono, and [Nostrand](https://github.com/flybot-sg/magic) for running tests on both JVM and CLR.
 
 ```bash
 docker pull ghcr.io/flybot-sg/ci-clj-clr:<version>
@@ -23,7 +23,7 @@ docker pull ghcr.io/flybot-sg/ci-clj-clr:<version>
 | Babashka | 1.12.216 | Task runner and scripting |
 | Node.js | 24.x | shadow-cljs support |
 | Mono | 6.x | Hosts Nostrand (net471 target) |
-| Nostrand | latest | [MAGIC](https://github.com/nasser/magic) task runner, dep manager, and REPL |
+| Nostrand | pinned via `MAGIC_VERSION` ARG | [MAGIC](https://github.com/flybot-sg/magic) task runner, dep manager, and REPL |
 
 ## Usage
 
