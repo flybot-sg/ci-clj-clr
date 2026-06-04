@@ -54,7 +54,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_24.x -o /tmp/nodesource-setup.sh
 
 # --- Nostrand (MAGIC task runner / dependency manager) ---
 # Installed from the flybot-sg/magic release tarball.
-ARG MAGIC_VERSION=v0.2.0
+ARG MAGIC_VERSION=v0.4.0
 RUN curl -fsSL "https://raw.githubusercontent.com/flybot-sg/magic/main/install/nos.sh" \
       | MAGIC_VERSION="${MAGIC_VERSION}" \
         INSTALL_DIR=/opt/nostrand \
