@@ -25,6 +25,8 @@ docker pull ghcr.io/flybot-sg/ci-clj-clr:<version>
 | Mono | 6.x | Hosts Nostrand (net471 target) |
 | Nostrand | pinned via `MAGIC_VERSION` ARG | [MAGIC](https://github.com/flybot-sg/magic) task runner, dep manager, and REPL |
 
+> The image version is independent of the bundled MAGIC version (the image also tracks JDK / Clojure / Node / Mono / Babashka); each MAGIC release ships a new image. The exact MAGIC pin lives in the `MAGIC_VERSION` ARG in the `Dockerfile`, the single source of truth.
+
 ## Usage
 
 Use as a CI base image for projects that need both JVM and CLR test runs:
